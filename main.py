@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 import os
 from flask import send_file
 import numpy as np
+from datetime import datetime
 app = Flask(__name__)
 
 load_dotenv()
@@ -77,6 +78,12 @@ def DeathPerDayChart():
 @app.route("/renderInfectionPerDayChart")
 def InfectionPerDayChart():
     return send_file('./static/InfectionPerDayChart.png', mimetype='image/gif')
+
+@app.route("/renderDailyReport")
+def renderDailyReport():
+    now = datetime.now()
+    today = now.strftime("%d_%m_%Y")
+    return send_file('./daily_reports/daily_report_'+str(today)+'.png', mimetype='image/gif')
 
 app.run()
 schedule.every().day.at('9:00').do(scrape)

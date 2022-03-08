@@ -54,9 +54,9 @@ def scrape():
     yesterday = today - datetime.timedelta(days=1)
     sql = f'SELECT new_infection FROM corona WHERE date = "{yesterday}"'
     mycursor.execute(sql)
-    myresult = mycursor.fetchall()
+    myresult_yesterday = mycursor.fetchall()
 
-    deference_in_pro = calculate_difference(int(new_infection),int(myresult[0][0]))
+    deference_in_pro = calculate_difference(int(new_infection),int(myresult_yesterday[0][0]))
     today = time.strftime("%Y-%m-%d")
     sql = "SELECT * FROM corona WHERE date = '"+today+"';"
     mycursor.execute(sql)
@@ -80,7 +80,7 @@ def scrape():
     renderAllCharts(myresult,4,'incidence','incidence')
     renderAllCharts(myresult,8,'recoveries','recoveries')
 
-    render_daily_report_image(new_infection, new_death, total_infection, total_death, incidenze)
+    render_daily_report_image(new_infection, new_death, total_infection, total_death, incidenze, myresult_yesterday)
 
 def renderAllCharts(myresult,a,filename,label_y):
     total_infection_history = [[],[]]
