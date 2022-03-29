@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from flask import Flask, Response
+from flask import request
 from scrape import scrape
 import schedule
 import time
@@ -48,8 +49,12 @@ def getalldata():
             database= os.environ.get('DB')
     )
     mycursor = mydb.cursor()
-    today = time.strftime("%Y-%m-%d")
-    sql = "SELECT * FROM corona WHERE date = '"+today+"';"
+    if request.args.get("date") == None:
+        today = time.strftime("%Y-%m-%d")
+        sql = "SELECT * FROM corona WHERE date = '"+today+"';"
+    else:
+        date = request.args.get("date")
+        sql = "SELECT * FROM corona WHERE date = '"+date+"';"
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     print(myresult)
@@ -78,6 +83,10 @@ def DeathPerDayChart():
 @app.route("/renderInfectionPerDayChart")
 def InfectionPerDayChart():
     return send_file('./static/InfectionPerDayChart.png', mimetype='image/gif')
+
+@app.route("/renderIncidence")
+def Incidence():
+    return send_file('./static/incidence.png', mimetype='image/gif')
 
 @app.route("/renderDailyReport")
 def renderDailyReport():
