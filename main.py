@@ -90,7 +90,7 @@ def renderDailyReport():
     today = now.strftime("%d_%m_%Y")
     return send_file('./daily_reports/daily_report_'+str(today)+'.png', mimetype='image/gif')
 
-app.run()
+app.run(host="0.0.0.0", port="8080")
 schedule.every().day.at('7:00').do(scrape)
 
 while 1:
