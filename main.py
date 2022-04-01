@@ -1,15 +1,12 @@
-import numpy as np
-import matplotlib.pyplot as plt
 from flask import Flask, Response
 from flask import request
-from scrape import scrape
-import schedule
-import time
-import mysql.connector
-from dotenv import load_dotenv
-import os
 from flask import send_file
-import numpy as np
+from scrape import scrape
+from dotenv import load_dotenv
+import mysql.connector
+import schedule
+import os
+import time
 from datetime import datetime
 app = Flask(__name__)
 
@@ -39,7 +36,6 @@ def vaccination():
 
 @app.route('/getalldata')
 def getalldata():
-    scrape()
     load_dotenv()
 
     mydb = mysql.connector.connect( 
@@ -95,7 +91,7 @@ def renderDailyReport():
     return send_file('./daily_reports/daily_report_'+str(today)+'.png', mimetype='image/gif')
 
 app.run()
-schedule.every().day.at('9:00').do(scrape)
+schedule.every().day.at('7:00').do(scrape)
 
 while 1:
     schedule.run_pending()

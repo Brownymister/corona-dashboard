@@ -1,14 +1,11 @@
 from dotenv import load_dotenv
 import mysql.connector
+import plotly.graph_objs as go
 import os
-import plotly.express as px
 import requests
 import json
-import plotly.graph_objs as go
-from plotly.offline import iplot
 import csv
 import time
-
 
 def split(l, n):
     for i in range(0, len(l), n):

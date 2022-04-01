@@ -173,12 +173,11 @@
     </div>
     <div class="footer" style="margin-top: 3%;">
         <footer class="py-3 my-4">
-            <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <ul class="nav justify-content-center border-top pb-3 mb-3">
                 <li class="nav-item"><a href="/" class="nav-link px-2 text-muted">Dashboard</a></li>
                 <li class="nav-item"><a href="/quellen" class="nav-link px-2 text-muted">Quellen</a></li>
                 <li class="nav-item"><a href="/renderDailyReport" class="nav-link px-2 text-muted">Tagesbericht</a></li>
             </ul>
-            <p class="text-center text-muted">ALLE ANGABEN OHNE GEWÄHR</p>
         </footer>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js " integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p " crossorigin="anonymous "></script>
@@ -187,19 +186,14 @@
         async function getDate() {
             var date = document.getElementById("date").value;
             var alldata = await axios.get('/getalldata?date=' + date);
-            var alldata = alldata.data;
-            $('dateDisplay').innerHTML = "Datum: " + alldata['date'];
-            $('incedence_de').innerHTML = alldata['incedence_de'].replace('.', ',')
-            $('new_cases').innerHTML = "+ " + setpoint(alldata['new_infection'])
-            $('new_deaths').innerHTML = "+ " + alldata['new_deaths']
-            $('total_deaths').innerHTML = setpoint(alldata['total_deaths'])
-            $('total_infection').innerHTML = setpoint(alldata['total_infection'])
-            $('scroller').innerHTML = "+++ Deutschland +++ " + alldata['date'] + " Neu Infektionen: <b>+" + setpoint(alldata['new_infection']) + "</b> ||| Neue Todesfälle <b>+" + setpoint(alldata['new_deaths']) + "</b> ||| 7-T-Inzidenz <b>" + alldata['incedence_de'].replace('.', ',') +
-                "</b> ||| Infektionen seit Beginn <b>" + setpoint(alldata['total_infection']) + "</b> ||| Tode seit Beginn <b>" + setpoint(alldata['total_deaths']) +
-                "</b>"
+            updateUI(alldata);
         }
         async function getalldata() {
             var alldata = await axios.get('/getalldata');
+            updateUI(alldata);
+        }
+
+        function updateUI(alldata) {
             var alldata = alldata.data;
             $('dateDisplay').innerHTML = "Datum: " + alldata['date'];
             $('incedence_de').innerHTML = alldata['incedence_de'].replace('.', ',')

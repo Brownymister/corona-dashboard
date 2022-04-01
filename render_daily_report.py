@@ -15,8 +15,8 @@ def render_daily_report_image(new_infektion, new_death, total_infektion, total_d
     infectionPerDayChart = infectionPerDayChart.resize((round(infectionPerDayChart.size[0]*size), round(infectionPerDayChart.size[1]*size)))
     incidence = Image.open('./static/incidence.png')
     incidence = incidence.resize((round(incidence.size[0]*size), round(incidence.size[1]*size)))
-    arrow_up = Image.open('./static/arrow_up.png')
-    arrow_down = Image.open('./static/arrow_down.png')
+    arrow_up = Image.open('./arrows/arrow_up.png')
+    arrow_down = Image.open('./arrows/arrow_down.png')
 
     now = datetime.now()
 

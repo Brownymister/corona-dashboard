@@ -1,16 +1,11 @@
 import requests
-from bs4 import BeautifulSoup
-import os
-import mysql.connector
 from dotenv import load_dotenv
-import time
-import matplotlib.pyplot as plt
+import mysql.connector
 import json
-import matplotlib.ticker as plticker
-import numpy as np
-import plotly.express as px
 import plotly.graph_objs as go
 import datetime
+import time
+import os
 from render_daily_report import render_daily_report_image
 
 def calculate_difference(w,p):

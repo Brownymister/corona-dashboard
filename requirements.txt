@@ -1,0 +1,8 @@
+numpy
+flask
+schedule
+mysql-connector
+python-dotenv
+pillow
+requests
+beautifulsoup4
