@@ -7,6 +7,7 @@ class Db:
     mycursor = None
     mydb = None
     def __init__(self):
+        load_dotenv()
         self.mydb = mysql.connector.connect(
             host=os.environ.get('DBHOST'),
             user=os.environ.get('DBUSER'),
