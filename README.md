@@ -1,3 +1,3 @@
 # corona-dashboard
 
-Flask Webserver that regularly request the RKI-API and gets the coronanumbers and writes it to a mysql database. The server shows the numbers as well as a graphical representation of the data.
+Flask web server that regularly queries the RKI API, retrieves the corona numbers and writes them to a mysql database. The server displays both the numbers and a graphical representation of the data.

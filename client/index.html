@@ -75,6 +75,7 @@
     <div class="row justify-content-center">
         <div style="margin: 4%;margin-left: 3%;margin-right: 3%;" class="row justify-content-center">
             <p id="dateDisplay"></p>
+            <p id="days"></p>
             <div class="card " style="width: 18rem; margin:1%;margin-left:2%;margin-right:2%; ">
                 <div class="card-body ">
                     <h1 class="card-title " id="incedence_de"></h1>
@@ -196,11 +197,12 @@
         function updateUI(alldata) {
             var alldata = alldata.data;
             $('dateDisplay').innerHTML = "Datum: " + alldata['date'];
-            $('incedence_de').innerHTML = alldata['incedence_de'].replace('.', ',')
-            $('new_cases').innerHTML = "+ " + setpoint(alldata['new_infection'])
-            $('new_deaths').innerHTML = "+ " + alldata['new_deaths']
-            $('total_deaths').innerHTML = setpoint(alldata['total_deaths'])
-            $('total_infection').innerHTML = setpoint(alldata['total_infection'])
+            $('incedence_de').innerHTML = alldata['incedence_de'].replace('.', ',');
+            $('new_cases').innerHTML = "+ " + setpoint(alldata['new_infection']);
+            $('new_deaths').innerHTML = "+ " + alldata['new_deaths'];
+            $('total_deaths').innerHTML = setpoint(alldata['total_deaths']);
+            $('total_infection').innerHTML = setpoint(alldata['total_infection']);
+            $('days').innerHTML = alldata['days'] + " Tage Corona";
             $('scroller').innerHTML = "+++ Deutschland +++ " + alldata['date'] + " Neu Infektionen: <b>+" + setpoint(alldata['new_infection']) + "</b> ||| Neue Todesfälle <b>+" + setpoint(alldata['new_deaths']) + "</b> ||| 7-T-Inzidenz <b>" + alldata['incedence_de'].replace('.', ',') +
                 "</b> ||| Infektionen seit Beginn <b>" + setpoint(alldata['total_infection']) + "</b> ||| Tode seit Beginn <b>" + setpoint(alldata['total_deaths']) +
                 "</b>"

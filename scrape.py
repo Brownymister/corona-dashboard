@@ -1,3 +1,4 @@
+from wsgiref.util import request_uri
 import requests
 from dotenv import load_dotenv
 import mysql.connector
@@ -7,33 +8,20 @@ import datetime
 import time
 import os
 from render_daily_report import render_daily_report_image
+from evaluation import evaluateAverage , get_all_new_infections_from_db
+from db import Db
 
 def calculate_difference(w,p):
     w = w *100
     return w/p
 
 def scrape():
-    load_dotenv()
-    mydb = mysql.connector.connect( 
-            host= os.environ.get('DBHOST'), 
-            user= os.environ.get('DBUSER'),
-            password= os.environ.get('PASSWORD'),
-            database= os.environ.get('DB')
-    )
-    mycursor = mydb.cursor()
+    mydb = Db()
+    mycursor = mydb.mycursor
 
     mycursor.execute("CREATE TABLE IF NOT EXISTS corona (date DATE, new_infection longtext,total_infection_de longtext,t_difference_in_pro float, incedence longtext, dead longtext,new_death longtext, PRIMARY KEY (date));")
-    parameter = {
-    'user-agent':'python-requests/2.9.1',
-    'where': f'AdmUnitId = 0', # Welche landkreise sollen zurück gegeben werden
-    'outFields': '*', # Rückgabe aller Felder
-    'returnGeometry': False, # Keine Geometrien
-    'f':'json', # Rückgabeformat, hier JSON
-    'cacheHint': True # Zugriff über CDN anfragen
-    } 
-    URL = 'https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/rki_key_data_v/FeatureServer/0/query?'
-    page = requests.get(url=URL, params=parameter)
-    resultjson_de = json.loads(page.text)
+    
+    resultjson_de = request_rki()
     resultjson_de = resultjson_de['features'][0]['attributes']
 
     new_infection = resultjson_de['AnzFallNeu']
@@ -47,8 +35,8 @@ def scrape():
     today = datetime.date.today()
 
     yesterday = today - datetime.timedelta(days=1)
-    sql = f'SELECT new_infection FROM corona WHERE date = "{yesterday}"'
-    mycursor.execute(sql)
+    get_new_infection_of_yesterday = f'SELECT new_infection FROM corona WHERE date = "{yesterday}"'
+    mycursor.execute(get_new_infection_of_yesterday)
     myresult_yesterday = mycursor.fetchall()
 
     deference_in_pro = calculate_difference(int(new_infection),int(myresult_yesterday[0][0]))
@@ -60,13 +48,16 @@ def scrape():
     if myresult:
         if str(myresult[0][0]) != str(today):
             mycursor.execute(sql)
-            mydb.commit()
+            mydb.mydb.commit()
     else:
         mycursor.execute(sql)
-        mydb.commit()
+        mydb.mydb.commit()
     sql = "SELECT * FROM corona"
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
+
+    evaluateAverage(get_all_new_infections_from_db())
+
     renderAllCharts(myresult,2,'TotalInfectionChart','Corona Infektionen in Millionen')
     renderAllCharts(myresult,3,'procent','Corona Infektionen in Millionen')
     renderAllCharts(myresult,1,'InfectionPerDayChart','Infektionen Pro Tag')
@@ -81,12 +72,11 @@ def renderAllCharts(myresult,a,filename,label_y):
     total_infection_history = [[],[]]
     dates = []
     for i in range(len(myresult)):
-        total_infection_history[0].append(str(myresult[i][0]))#myresult[i][0]
+        total_infection_history[0].append(str(myresult[i][0]))
         total_infection_history[1].append(float(myresult[i][a]))
         dates.append(i)
     Previous_Date = datetime.datetime.today() + datetime.timedelta(days=10)
     Previous_Date = str(Previous_Date).split(" ")[0]
-    print (Previous_Date)
 
     fig = go.Figure(data=go.Scatter(x=total_infection_history[0],  
                         y=total_infection_history[1],
@@ -98,4 +88,17 @@ def renderAllCharts(myresult,a,filename,label_y):
                    "showlegend": False})
     fig.write_image("./static/"+filename+".png",format="png", width=1000, height=600, scale=3)
 
-scrape()
+def request_rki():
+    parameter = {
+    'user-agent':'python-requests/2.9.1',
+    'where': f'AdmUnitId = 0', # Welche landkreise sollen zurück gegeben werden
+    'outFields': '*', # Rückgabe aller Felder
+    'returnGeometry': False, # Keine Geometrien
+    'f':'json', # Rückgabeformat, hier JSON
+    'cacheHint': True # Zugriff über CDN anfragen
+    } 
+    URL = 'https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/rki_key_data_v/FeatureServer/0/query?'
+    page = requests.get(url=URL, params=parameter)
+    return json.loads(page.text)
+
+# scrape()

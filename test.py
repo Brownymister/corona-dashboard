@@ -52,7 +52,7 @@ def f():
                 #        ) LIMIT 1;"""
                 print(sql)
                 mycursor.execute(sql)
-                mydb.commit()
+                mydb.mydb.commit()
 
 def updateDifference():
     sql = "SELECT * FROM corona;"
@@ -69,7 +69,7 @@ def updateDifference():
             sql = f'UPDATE corona SET t_difference_in_pro = {deference_in_pro} WHERE date = "{str(myresult[i][0])}"'
             print(sql)
             mycursor.execute(sql)
-            mydb.commit()
+            mydb.mydb.commit()
 
 def calculate_difference(w,p):
     w = w *100
@@ -90,7 +90,7 @@ def setsum7D():
                     sql = f'UPDATE corona SET SumLast7D = {SumLast7D} WHERE date = "{str(myresult[i][0])}"'
                     print(sql)
                     mycursor.execute(sql)
-                    mydb.commit()
+                    mydb.mydb.commit()
 
 def updateincedenze():
     sql = "SELECT * FROM corona;"
@@ -108,7 +108,7 @@ def updateincedenze():
                 sql = f'UPDATE corona SET incedence = {incidenz} WHERE date = "{str(myresult[i][0])}"'
                 print(sql)
                 mycursor.execute(sql)
-                mydb.commit()
+                mydb.mydb.commit()
 
 
 """ sql = "SELECT * FROM corona;"
