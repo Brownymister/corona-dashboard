@@ -84,6 +84,10 @@ def InfectionPerDayChart():
 def Incidence():
     return send_file('./static/incidence.png', mimetype='image/gif')
 
+@app.route("/renderAverage")
+def renderAverage():
+    return send_file('./static/average.png', mimetype='image/gif')
+
 @app.route("/renderDailyReport")
 def renderDailyReport():
     now = datetime.now()

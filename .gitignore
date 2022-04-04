@@ -127,12 +127,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-<<<<<<< HEAD
-=======
 
 /average
-/static
 
 Prompt,Space_Mono
 daily_reports
->>>>>>> 397c26e (added daily report png)

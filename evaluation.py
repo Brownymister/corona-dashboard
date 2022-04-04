@@ -81,7 +81,7 @@ def evaluateAverage(infections):
                        "xaxis": {"title": "Tage"},
                        "yaxis": {"title": "durchschnittliche infektionen"},
                        "showlegend": False})
-    fig.write_image(f"./static/av{today}.png", format="png", width=1000, height=600, scale=3)
+    fig.write_image(f"./static/average.png", format="png", width=1000, height=600, scale=3)
 
 
 evaluateAverage(get_all_new_infections_from_db())
