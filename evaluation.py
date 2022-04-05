@@ -1,7 +1,4 @@
-from dotenv import load_dotenv
-import mysql.connector
 import plotly.graph_objs as go
-import os
 import requests
 import json
 import csv
@@ -84,7 +81,7 @@ def evaluateAverage(infections):
     fig.write_image(f"./static/average.png", format="png", width=1000, height=600, scale=3)
 
 
-evaluateAverage(get_all_new_infections_from_db())
+# evaluateAverage(get_all_new_infections_from_db())
 
 # ! URL IS OUT OF DATE
 def getAltersgruppen():

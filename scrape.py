@@ -1,12 +1,9 @@
-from wsgiref.util import request_uri
 import requests
-from dotenv import load_dotenv
-import mysql.connector
 import json
 import plotly.graph_objs as go
 import datetime
 import time
-import os
+# modules
 from render_daily_report import render_daily_report_image
 from evaluation import evaluateAverage , get_all_new_infections_from_db
 from db import Db

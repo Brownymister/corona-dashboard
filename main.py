@@ -1,19 +1,16 @@
-from flask import Flask, Response
-from flask import request
-from flask import send_file
-from scrape import scrape
-from dotenv import load_dotenv
-import mysql.connector
+from flask import Flask ,request , send_file
 import schedule
-import os
 import time
 from datetime import datetime
+# modules
 from db import Db
+from scrape import scrape
+
 app = Flask(__name__)
 
 scrape()
 
-def get_corona_fromdb(request):
+def get_data_fromdb_by_date(request):
     mydb = Db()
     mycursor = mydb.mycursor
 
@@ -42,10 +39,10 @@ def vaccination():
 @app.route('/getalldata')
 def getalldata():
 
-    myresult = get_corona_fromdb(request)
+    myresult = get_data_fromdb_by_date(request)
     if myresult == []:
         scrape()
-        myresult = get_corona_fromdb(request)
+        myresult = get_data_fromdb_by_date(request)
 
     mydb = Db()
     mycursor = mydb.mycursor

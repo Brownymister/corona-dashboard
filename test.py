@@ -1,10 +1,11 @@
+#
+# helper functions to insert or update data fast in db
+#
+
 import csv
-from jinja2 import Undefined
-""" import matplotlib.pyplot as plt """
 import mysql.connector
 from dotenv import load_dotenv
 import os
-""" from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas """
 load_dotenv()
 
 mydb = mysql.connector.connect( 
