@@ -15,17 +15,6 @@ Scrape().scrape()
 def index():
     return open("./client/index.html", "r").read()
 
-
-@app.route('/quellen')
-def source():
-    return open("./client/quellen.html", "r").read()
-
-
-@app.route('/impfen')
-def vaccination():
-    return open("./client/vaccination.html", "r").read()
-
-
 @app.route('/getalldata')
 def getalldata():
     mydb = Db()
