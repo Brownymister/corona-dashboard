@@ -13,5 +13,5 @@ class Date:
 
     def get_formatted_date(self):
         now = self.get_todays_date()
-        today = now.strftime("%Y_%m_%d")
+        today = now.strftime("%Y-%m-%d")
         return today

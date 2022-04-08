@@ -36,13 +36,10 @@ class Scrape:
         db_data_of_today = mydb.execute_sql(select_data_of_today)
         insert_todays_data = f'INSERT INTO corona (date, new_infection,total_infection_de,t_difference_in_pro,incedence,dead, new_death, SumLast7D,recoveries) VALUES ("{today}", {new_infection},{total_infection}, {str(deference_in_pro)}, {incidenze}, {total_death},{new_death}, {SumLast7D}, {recoveries})'
 
-        data_of_today_is_not_data_in_db = str(
-            db_data_of_today[0][0]) != str(today)
+        data_of_today_is_in_db = 0 in range(-len(db_data_of_today), len(db_data_of_today))
+        # data_of_today_is_not_data_in_db = str(db_data_of_today[0][0]) != str(today)
 
-        if db_data_of_today:
-            if data_of_today_is_not_data_in_db:
-                mydb.execute_sql(insert_todays_data)
-        else:
+        if not data_of_today_is_in_db:
             mycursor.execute(insert_todays_data)
             mydb.mydb.commit()
         all_data_in_db = mydb.get_all_data_from_db()
