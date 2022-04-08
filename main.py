@@ -22,7 +22,7 @@ def getalldata():
     myresult = mydb.get_data_fromdb_by_date(request.args.get("date"))
     if myresult == []:
         Scrape().scrape()
-        myresult = mydb.get_data_fromdb_by_date(request.args.get("date"))
+        myresult = Db().get_data_fromdb_by_date(request.args.get("date"))
 
     history = mydb.get_all_data_from_db()
 
