@@ -11,56 +11,68 @@ from .date import Date
 
 class Scrape:
 
+    corona_numbers = {
+        "new_infection": None,
+        "incidenze": None,
+        "total_death": None,
+        "new_death": None,
+        "total_infection": None,
+        "SumLast7D": None,
+        "recoveries": None,
+    }
+
     def scrape(self):
         mydb = Db()
         mycursor = mydb.mycursor
 
-        mycursor.execute("CREATE TABLE IF NOT EXISTS corona (date DATE, new_infection longtext,total_infection_de longtext,t_difference_in_pro float, incedence longtext, dead longtext,new_death longtext, PRIMARY KEY (date));")
+        self.create_table_if_not_excist(mycursor)
 
         resultjson_de = self.request_rki()
         resultjson_de = resultjson_de['features'][0]['attributes']
 
-        new_infection = resultjson_de['AnzFallNeu']
-        incidenze = resultjson_de['Inz7T']
-        total_death = resultjson_de['AnzTodesfall']
-        new_death = resultjson_de['AnzTodesfallNeu']
-        total_infection = resultjson_de['AnzFall']
-        SumLast7D = resultjson_de['AnzFall7T']
-        recoveries = resultjson_de['AnzGenesenNeu']
+        self.set_corona_numbers(resultjson_de)
 
-        deference_in_pro, db_data_of_yesterday = self.get_diference_of_today_and_yesterday(
-            new_infection, mydb)
+        deference_in_pro, db_data_of_yesterday = self.get_diference_of_today_and_yesterday(self.corona_numbers["new_infection"], mydb)
 
         today = Date().get_todays_date()
         select_data_of_today = "SELECT * FROM corona WHERE date = '"+str(today)+"';"
         db_data_of_today = mydb.execute_sql(select_data_of_today)
-        insert_todays_data = f'INSERT INTO corona (date, new_infection,total_infection_de,t_difference_in_pro,incedence,dead, new_death, SumLast7D,recoveries) VALUES ("{today}", {new_infection},{total_infection}, {str(deference_in_pro)}, {incidenze}, {total_death},{new_death}, {SumLast7D}, {recoveries})'
+        insert_todays_data = f'INSERT INTO corona (date, new_infection,total_infection_de,t_difference_in_pro,incedence,dead, new_death, SumLast7D,recoveries) VALUES ("{today}", {self.corona_numbers["new_infection"]},{self.corona_numbers["total_infection"]}, {str(deference_in_pro)}, {self.corona_numbers["incidenze"]}, {self.corona_numbers["total_death"]},{self.corona_numbers["new_death"]}, {self.corona_numbers["SumLast7D"]}, {self.corona_numbers["recoveries"]})'
 
         data_of_today_is_in_db = 0 in range(-len(db_data_of_today), len(db_data_of_today))
-        # data_of_today_is_not_data_in_db = str(db_data_of_today[0][0]) != str(today)
 
         if not data_of_today_is_in_db:
             mycursor.execute(insert_todays_data)
             mydb.mydb.commit()
         all_data_in_db = mydb.get_all_data_from_db()
 
-        Evaluation().evaluate_average(Evaluation().get_all_new_infections_from_db())
+        evaluation = Evaluation()
 
-        self.render_chart(all_data_in_db, 2, 'TotalInfectionChart',
-                          'Corona Infektionen in Millionen')
-        self.render_chart(all_data_in_db, 3, 'procent',
-                          'Corona Infektionen in Millionen')
-        self.render_chart(all_data_in_db, 1,
-                          'InfectionPerDayChart', 'Infektionen Pro Tag')
-        self.render_chart(all_data_in_db, 5, 'TotalDeathChart',
-                          'Tode durch das Corona Virus')
-        self.render_chart(all_data_in_db, 6, 'DeathPerDayChart',
-                          'Tode durch das Corona Virus Pro Tag')
-        self.render_chart(all_data_in_db, 4, 'incidence', 'incidence')
-        self.render_chart(all_data_in_db, 8, 'recoveries', 'recoveries')
+        evaluation.evaluate_average_per_day(mydb.get_all_new_infections_from_db())
+        evaluation.save_average_as_plot("./static/average.png")
+
+        self.render_chart(all_data_in_db, 1, './static/InfectionPerDayChart', 'Infektionen Pro Tag')
+        self.render_chart(all_data_in_db, 2, './static/TotalInfectionChart', 'Corona Infektionen in Millionen')
+        self.render_chart(all_data_in_db, 3, './static/procent', 'Corona Infektionen in Millionen')
+        self.render_chart(all_data_in_db, 4, './static/incidence', 'incidence')
+        self.render_chart(all_data_in_db, 5, './static/TotalDeathChart', 'Tode durch das Corona Virus')
+        self.render_chart(all_data_in_db, 6, './static/DeathPerDayChart', 'Tode durch das Corona Virus Pro Tag')
+        self.render_chart(all_data_in_db, 8, './static/recoveries', 'recoveries')
 
         Daily_report(1200,1000).render_daily_report_image(
-            new_infection, new_death, total_infection, total_death, incidenze, db_data_of_yesterday)
+            self.corona_numbers["new_infection"], self.corona_numbers["new_death"], self.corona_numbers["total_infection"], self.corona_numbers["total_death"], self.corona_numbers["incidenze"], db_data_of_yesterday)
+
+    def create_table_if_not_excist(self, mycursor):
+        mycursor.execute("CREATE TABLE IF NOT EXISTS corona (date DATE PRIMARY KEY, new_infection longtext,total_infection_de longtext,t_difference_in_pro float, incedence longtext, dead longtext,new_death longtext, SumLast7D varchar(200),recoveries varchar(200));")
+
+    def set_corona_numbers(self, resultjson_de):
+        self.corona_numbers["new_infection"] = resultjson_de['AnzFallNeu']
+        self.corona_numbers["incidenze"] = resultjson_de['Inz7T']
+        self.corona_numbers["total_death"] = resultjson_de['AnzTodesfall']
+        self.corona_numbers["new_death"] = resultjson_de['AnzTodesfallNeu']
+        self.corona_numbers["total_infection"] = resultjson_de['AnzFall']
+        self.corona_numbers["SumLast7D"] = resultjson_de['AnzFall7T']
+        self.corona_numbers["recoveries"] = resultjson_de['AnzGenesenNeu']
 
     def request_rki(self):
         parameter = {
@@ -83,9 +95,9 @@ class Scrape:
             int(new_infection), int(db_data_of_yesterday[0][0]))
         return deference_in_pro, db_data_of_yesterday
 
-    def calculate_difference(self, w, p):
-        w = w * 100
-        return w/p
+    def calculate_difference(self, new_value, basic_value):
+        new_value = new_value * 100
+        return new_value/basic_value
 
     def render_chart(self, all_data_in_db, a, filename, label_y):
         total_infection_history, Previous_Date = self.sort_data_to_x_and_y(
@@ -103,7 +115,7 @@ class Scrape:
              "yaxis": {"title": label_y},
              "showlegend": False}
         )
-        fig.write_image("./static/"+filename+".png",
+        fig.write_image(filename+".png",
                         format="png", width=1000, height=600, scale=3)
 
     def sort_data_to_x_and_y(self, all_data_in_db, a):
