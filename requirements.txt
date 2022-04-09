@@ -6,3 +6,6 @@ python-dotenv
 pillow
 requests
 beautifulsoup4
+plotly
+numpy
+kaleido
