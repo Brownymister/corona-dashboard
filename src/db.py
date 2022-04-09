@@ -28,7 +28,7 @@ class Db:
         myresult = self.mycursor.fetchall()
         return myresult
 
-    def get_data_fromdb_by_date(self, date):
+    def get_data_fromdb_by_date(self, date) -> list:
         request_not_gives_date_param = date == None
 
         if request_not_gives_date_param:
@@ -39,3 +39,11 @@ class Db:
         data_by_date = self.execute_sql(select_data_by_date)
         
         return data_by_date
+
+    def get_all_new_infections_from_db(self) ->list:
+        mydb = Db()
+        all_data_from_db = mydb.get_all_data_from_db()
+        infections = []
+        for i in all_data_from_db:
+            infections.append(i[1])
+        return infections

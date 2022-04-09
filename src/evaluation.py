@@ -1,3 +1,4 @@
+from numpy import average
 import plotly.graph_objs as go
 # modules
 from .db import Db
@@ -5,7 +6,11 @@ from .db import Db
 
 class Evaluation:
 
-    def evaluate_average(self, infections):
+    averages = []
+    classes = ['Mondays', 'Tuesdays', "Wednesdays",
+                   "Thursdays", "Fridays", "Saturdays", "Sundays"]
+
+    def evaluate_average_per_day(self, infections:list):
         infections = list(self.split_array_to_smaler_arrays(infections, 7))
 
         week = {
@@ -33,44 +38,36 @@ class Evaluation:
             if len(i) >= 7:
                 week['Tuesdays'].append(i[6])
 
-        classes = ['Mondays', 'Tuesdays', "Wednesdays",
-                   "Thursdays", "Fridays", "Saturdays", "Sundays"]
-        avareges = []
+        for class_ in range(len(self.classes)):
+            average = round(self.calculate_average(self.classes[class_], week), 5)
+            self.averages.append(average)
 
-        for class_ in range(len(classes)):
-            average = round(self.get_average(classes[class_], week), 5)
-            avareges.append(average)
-            print(average)
-        
-        self.save_average_as_plot(classes, avareges)
-
-    def split_array_to_smaler_arrays(self,array, number_of_parts):
+    def split_array_to_smaler_arrays(self,array:list, number_of_parts:int):
         for i in range(0, len(array), number_of_parts):
             yield array[i:i + number_of_parts]
 
-
-    def get_average(self, weekday, week):
-        weekdaySum = 0
+    def calculate_average(self, weekday:str, week:object) -> float:
+        weekday_sum = 0
         for i in week[weekday]:
-            weekdaySum += int(i)
-        weekdayAv = weekdaySum / len(week[weekday])
-        return weekdayAv
+            weekday_sum += int(i)
+        weekday_average = weekday_sum / len(week[weekday])
+        return weekday_average
 
-    def save_average_as_plot(self, classes, avareges) -> None:
-        fig = go.Figure(data=go.Bar(y=avareges,
-                                    x=classes,
-                                    marker_color='indianred', text=avareges))
-        fig.update_layout({"title": "average of day infections",
-                           "xaxis": {"title": "Tage"},
-                           "yaxis": {"title": "durchschnittliche infektionen"},
-                           "showlegend": False})
-        fig.write_image(f"./static/average.png", format="png",
-                        width=1000, height=600, scale=3)
-
-    def get_all_new_infections_from_db(self):
-        mydb = Db()
-        all_data_from_db = mydb.get_all_data_from_db()
-        infections = []
-        for i in all_data_from_db:
-            infections.append(i[1])
-        return infections
+    def save_average_as_plot(self,filename:str="./static/average.png") -> None:
+        """
+        requires the evaluate_average_per_day() function to run in the same instance.
+        The images are saved in .png Files.
+        If not specified, the file name is "./staic/average.png".
+        """
+        if self.averages != []:
+            fig = go.Figure(data=go.Bar(y=self.averages,
+                                        x=self.classes,
+                                        marker_color='indianred', text=self.averages))
+            fig.update_layout({"title": "durchschnittliche infektionen",
+                            "xaxis": {"title": "Tage"},
+                            "yaxis": {"title": "Infektionen"},
+                            "showlegend": False})
+            fig.write_image(filename, format="png",
+                            width=1000, height=600, scale=3)
+        else:
+            print("ERROR: average not calculated; To save, the function evaluation.evaluate_average_per_day() must be executed")
