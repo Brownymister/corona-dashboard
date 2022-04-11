@@ -107,9 +107,5 @@ class TestScrape(unittest.TestCase):
             Output = [total_infection_history, Previous_Date]
             self.assertEqual(Output,expectedOutput)
 
-    def test_scrape(self):
-        Scrape().scrape()
-
-
 if __name__ == '__main__':
     unittest.main()
