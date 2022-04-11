@@ -17,7 +17,7 @@ class Db:
         )
         self.mycursor = self.mydb.cursor()
 
-    def execute_sql(self, statment):
+    def execute_sql(self, statment:str)->list:
         self.mycursor.execute(statment)
         myresult = self.mycursor.fetchall()
         return myresult

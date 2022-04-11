@@ -1,10 +1,12 @@
 from flask import Flask, request, send_file
 import schedule
 import time
+import os
 # modules
 from src.db import Db
 from src.scrape import Scrape
 from src.date import Date
+from src.render_daily_report import Daily_report
 
 app = Flask(__name__)
 
@@ -72,6 +74,10 @@ def renderAverage():
 @app.route("/renderDailyReport")
 def renderDailyReport():
     today = Date().get_formatted_date()
+    daily_repots = os.listdir("./daily_reports/")
+    if 'daily_report_'+str(today)+'.png' not in daily_repots:
+        Scrape().scrape()
+     
     return send_file('./daily_reports/daily_report_'+str(today)+'.png', mimetype='image/gif')
 
 

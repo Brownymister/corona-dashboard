@@ -100,8 +100,7 @@ class Scrape:
         return new_value/basic_value
 
     def render_chart(self, all_data_in_db, a, filename, label_y):
-        total_infection_history, Previous_Date = self.sort_data_to_x_and_y(
-            all_data_in_db, a)
+        total_infection_history, Previous_Date = self.sort_data_to_x_and_y(all_data_in_db, a)
 
         fig = go.Figure(
             data=go.Scatter(x=total_infection_history[0],
@@ -120,11 +119,8 @@ class Scrape:
 
     def sort_data_to_x_and_y(self, all_data_in_db, a):
         total_infection_history = [[], []]
-        dates = []
         for i in range(len(all_data_in_db)):
             total_infection_history[0].append(str(all_data_in_db[i][0]))
             total_infection_history[1].append(float(all_data_in_db[i][a]))
-            dates.append(i)
-        Previous_Date = datetime.datetime.today() + datetime.timedelta(days=10)
-        Previous_Date = str(Previous_Date).split(" ")[0]
+        Previous_Date = Date().get_date_in_10_days()
         return total_infection_history, Previous_Date

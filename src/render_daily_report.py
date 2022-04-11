@@ -7,9 +7,6 @@ from .date import Date
 
 class Daily_report:
 
-    width = 1200
-    height = 1000
-
     image = None
     drawn_image = None
     font_normal = None
