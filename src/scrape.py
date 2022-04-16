@@ -37,7 +37,7 @@ class Scrape:
         today = Date().get_todays_date()
         select_data_of_today = "SELECT * FROM corona WHERE date = '"+str(today)+"';"
         db_data_of_today = mydb.execute_sql(select_data_of_today)
-        insert_todays_data = f'INSERT INTO corona (date, new_infection,total_infection_de,t_difference_in_pro,incedence,dead, new_death, SumLast7D,recoveries) VALUES ("{today}", {self.corona_numbers["new_infection"]},{self.corona_numbers["total_infection"]}, {str(deference_in_pro)}, {self.corona_numbers["incidenze"]}, {self.corona_numbers["total_death"]},{self.corona_numbers["new_death"]}, {self.corona_numbers["SumLast7D"]}, {self.corona_numbers["recoveries"]})'
+        insert_todays_data = f'INSERT INTO corona (date, new_infection,total_infection_de,t_difference_in_pro,incedence,death, new_death, SumLast7D,recoveries) VALUES ("{today}", {self.corona_numbers["new_infection"]},{self.corona_numbers["total_infection"]}, {str(deference_in_pro)}, {self.corona_numbers["incidenze"]}, {self.corona_numbers["total_death"]},{self.corona_numbers["new_death"]}, {self.corona_numbers["SumLast7D"]}, {self.corona_numbers["recoveries"]})'
 
         data_of_today_is_in_db = 0 in range(-len(db_data_of_today), len(db_data_of_today))
 
@@ -63,7 +63,7 @@ class Scrape:
             self.corona_numbers["new_infection"], self.corona_numbers["new_death"], self.corona_numbers["total_infection"], self.corona_numbers["total_death"], self.corona_numbers["incidenze"], db_data_of_yesterday)
 
     def create_table_if_not_excist(self, mycursor):
-        mycursor.execute("CREATE TABLE IF NOT EXISTS corona (date DATE PRIMARY KEY, new_infection longtext,total_infection_de longtext,t_difference_in_pro float, incedence longtext, dead longtext,new_death longtext, SumLast7D varchar(200),recoveries varchar(200));")
+        mycursor.execute("CREATE TABLE IF NOT EXISTS corona (date DATE PRIMARY KEY, new_infection longtext,total_infection_de longtext,t_difference_in_pro float, incedence longtext, death longtext,new_death longtext, SumLast7D varchar(200),recoveries varchar(200));")
 
     def set_corona_numbers(self, resultjson_de):
         self.corona_numbers["new_infection"] = resultjson_de['AnzFallNeu']
