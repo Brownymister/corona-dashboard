@@ -19,7 +19,6 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        source testing-env/bin/activate
     - name: run Tests
       run: python3 -m unittest __tests__/date_test.py __tests__/evaluation_test.py __tests__/scrape_test.py __tests__/render_daily_report_test.py -v

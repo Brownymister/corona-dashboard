@@ -3,7 +3,7 @@ flask
 schedule
 mysql-connector
 python-dotenv
-pillow
+Pillow
 requests
 beautifulsoup4
 plotly
