@@ -6,3 +6,7 @@ Flask web server that regularly queries the RKI API, retrieves the corona number
 ```
 python3 -m unittest __tests__/*.py -v
 ```
+
+# font
+
+Prompt-font : [https://fonts.google.com/specimen/Prompt](https://fonts.google.com/specimen/Prompt)

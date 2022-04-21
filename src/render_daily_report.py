@@ -22,9 +22,9 @@ class Daily_report:
         self.image = Image.new('RGB', (width, height), color=(255, 255, 255))
         self.drawn_image = ImageDraw.Draw(self.image)
         self.font_normal = ImageFont.truetype(
-            "./Prompt,Space_Mono/Prompt/Prompt-LightItalic.ttf", 70)
+            "./font/Prompt-LightItalic.ttf", 70)
         self.font_smal = ImageFont.truetype(
-            "./Prompt,Space_Mono/Prompt/Prompt-LightItalic.ttf", 20)
+            "./font/Prompt-LightItalic.ttf", 20)
 
     def render_daily_report_image(self, new_infektion, new_death, total_infektion, total_death, inzidence, new_infection_of_yesterday,save_folder) -> None:
         new_size = 0.2
