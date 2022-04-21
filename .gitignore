@@ -132,3 +132,5 @@ dmypy.json
 
 Prompt,Space_Mono
 daily_reports
+
+.vscode

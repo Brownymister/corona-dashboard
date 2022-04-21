@@ -1,5 +1,4 @@
 from PIL import Image, ImageDraw, ImageFont
-from datetime import datetime
 import pathlib
 # module
 from .date import Date
@@ -27,7 +26,7 @@ class Daily_report:
         self.font_smal = ImageFont.truetype(
             "./Prompt,Space_Mono/Prompt/Prompt-LightItalic.ttf", 20)
 
-    def render_daily_report_image(self, new_infektion, new_death, total_infektion, total_death, inzidence, myresult_yesterday) -> None:
+    def render_daily_report_image(self, new_infektion, new_death, total_infektion, total_death, inzidence, new_infection_of_yesterday,save_folder) -> None:
         new_size = 0.2
         self.resize_size_of_charts(new_size)
 
@@ -35,11 +34,10 @@ class Daily_report:
         self.draw_corona_infos_to_image(
             new_infektion, new_death, total_infektion, total_death, inzidence, today)
 
-        self.add_arrow_to_image(new_infektion, myresult_yesterday)
+        self.add_arrow_to_image(new_infektion, new_infection_of_yesterday)
         self.add_charts_to_image()
 
-        self.image.save(str(pathlib.Path("render_daily_report.py").parent.resolve(
-        ))+'/daily_reports/daily_report_'+str(today)+'.png')
+        self.image.save(str(pathlib.Path("render_daily_report.py").parent.resolve())+save_folder+'/daily_report_'+str(today)+'.png')
 
     def resize_size_of_charts(self, new_size):
         self.infection_per_day_chart = self.infection_per_day_chart.resize(
@@ -80,8 +78,8 @@ class Daily_report:
         self.drawn_image.text((self.width/2, 430), "7-Tage-Inzi­denz",
                               font=self.font_smal, fill="#000", anchor="ms")
 
-    def add_arrow_to_image(self, new_infektion, myresult_yesterday):
-        new_infection_of_yesterday_is_greater_than_todays_new_infection = int(myresult_yesterday[0][0]) >= new_infektion
+    def add_arrow_to_image(self, new_infektion, new_infection_of_yesterday):
+        new_infection_of_yesterday_is_greater_than_todays_new_infection = new_infection_of_yesterday >= new_infektion
         if new_infection_of_yesterday_is_greater_than_todays_new_infection:
             self.image.paste(self.arrow_down_image, (self.width - 380, 100))
         else:

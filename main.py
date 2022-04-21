@@ -76,7 +76,7 @@ def renderDailyReport():
     today = Date().get_formatted_date()
     daily_repots = os.listdir("./daily_reports/")
     if 'daily_report_'+str(today)+'.png' not in daily_repots:
-        Scrape().scrape()
+        Scrape().scrape()   
      
     return send_file('./daily_reports/daily_report_'+str(today)+'.png', mimetype='image/gif')
 

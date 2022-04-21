@@ -89,7 +89,8 @@ class TestScrape(unittest.TestCase):
         scrape.render_chart(setup.all_data_in_db_dummy, 5, path + 'TotalDeathChart', 'Tode durch das Corona Virus')
         scrape.render_chart(setup.all_data_in_db_dummy, 6, path + 'DeathPerDayChart', 'Tode durch das Corona Virus Pro Tag')
         scrape.render_chart(setup.all_data_in_db_dummy, 8, path + 'recoveries', 'recoveries')
-        self.assertTrue(os.listdir(path), expectedOutput)
+
+        self.assertTrue(set(os.listdir(path)) == set(expectedOutput))
 
         Scrape_teardown().tear_down_render_chart(path, expectedOutput)
 
