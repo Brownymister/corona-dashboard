@@ -133,3 +133,5 @@ dmypy.json
 daily_reports
 
 .vscode
+
+docs

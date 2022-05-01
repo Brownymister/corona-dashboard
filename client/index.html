@@ -186,16 +186,19 @@
     <script>
         async function getDate() {
             var date = document.getElementById("date").value;
-            var alldata = await axios.get('/getalldata?date=' + date);
-            updateUI(alldata);
+            if (date != "") {
+                var alldata = await axios.get('/getalldata?date=' + date);
+                if (alldata.stus == 200) {
+                    updateUI(alldata.data);
+                }
+            }
         }
         async function getalldata() {
             var alldata = await axios.get('/getalldata');
-            updateUI(alldata);
+            updateUI(alldata.data);
         }
 
         function updateUI(alldata) {
-            var alldata = alldata.data;
             $('dateDisplay').innerHTML = "Datum: " + alldata['date'];
             $('incedence_de').innerHTML = alldata['incedence_de'].replace('.', ',');
             $('new_cases').innerHTML = "+ " + setpoint(alldata['new_infection']);

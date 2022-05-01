@@ -1,3 +1,10 @@
+"""
+.. module:: render_daily_report
+
+.. moduleauthor:: Julian `Brownymister` <Brownymister@gmail.com>
+
+"""
+
 from PIL import Image, ImageDraw, ImageFont
 import pathlib
 # module

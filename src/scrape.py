@@ -1,3 +1,10 @@
+"""
+.. module:: scrape
+
+.. moduleauthor:: Julian `Brownymister` <Brownymister@gmail.com>
+
+"""
+
 import requests
 import json
 import plotly.graph_objs as go
