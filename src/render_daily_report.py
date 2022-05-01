@@ -20,8 +20,6 @@ class Daily_report:
 
     arrow_up_image = Image.open('./arrows/arrow_up.png')
     arrow_down_image = Image.open('./arrows/arrow_down.png')
-    infection_per_day_chart = Image.open('./static/InfectionPerDayChart.png')
-    incidence_chart = Image.open('./static/incidence.png')
 
     def __init__(self, width, height) -> None:
         self.width = width
@@ -32,6 +30,9 @@ class Daily_report:
             "./font/Prompt-LightItalic.ttf", 70)
         self.font_smal = ImageFont.truetype(
             "./font/Prompt-LightItalic.ttf", 20)
+
+        self.infection_per_day_chart = Image.open('./static/InfectionPerDayChart.png')
+        self.incidence_chart = Image.open('./static/incidence.png')
 
     def render_daily_report_image(self, new_infektion, new_death, total_infektion, total_death, inzidence, new_infection_of_yesterday,save_folder) -> None:
         new_size = 0.2
