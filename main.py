@@ -12,20 +12,11 @@ app = Flask(__name__)
 
 Scrape().scrape()
 
- 
-@app.route('/blogs')
-def blog():
-    app.logger.info('Info level log')
-    app.logger.warning('Warning level log')
-    return f"Welcome to the Blog"
- 
-app.run(host='localhost', debug=True)
-
-
 
 @app.route('/')
 def index():
     return open("./client/index.html", "r").read()
+
 
 @app.route('/getalldata')
 def getalldata():
@@ -86,12 +77,12 @@ def renderDailyReport():
     today = Date().get_formatted_date()
     daily_repots = os.listdir("./daily_reports/")
     if 'daily_report_'+str(today)+'.png' not in daily_repots:
-        Scrape().scrape()   
-     
+        Scrape().scrape()
+
     return send_file('./daily_reports/daily_report_'+str(today)+'.png', mimetype='image/gif')
 
 
-app.run(host="0.0.0.0", port="8000")
+app.run(host="0.0.0.0", port="80")
 schedule.every().day.at('07:00').do(Scrape().scrape)
 
 while 1:
