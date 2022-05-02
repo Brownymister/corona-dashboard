@@ -116,8 +116,37 @@ class Scrape:
         fig = go.Figure(
             data=go.Scatter(x=total_infection_history[0],
                             y=total_infection_history[1],
+                            line = dict(width = 1),
                             marker_color='indianred',
                             text="infections"))
+        if a == 1:
+            average_last_7_days = []
+
+            for day in all_data_in_db:
+                average_last_7_days.append(int(day[7])/7)
+
+            fig.add_scatter(x=total_infection_history[0],
+                                y=average_last_7_days,
+                                line = dict(width = 3),
+                                marker_color='indianred',
+                                text="infection average of last seven days")
+        fig.update_layout(
+            legend=dict(
+                x=0,
+                y=1,
+                traceorder="reversed",
+                title_font_family="Times New Roman",
+                font=dict(
+                    family="Courier",
+                    size=12,
+                    color="black"
+                ),
+                bgcolor="LightSteelBlue",
+                bordercolor="Black",
+                borderwidth=2
+            )
+        )
+
         fig.update_layout(
             {"title": filename,
              "xaxis": {"title": "Datum",
