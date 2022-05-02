@@ -2,7 +2,6 @@ from flask import Flask, request, send_file
 import schedule
 import time
 import os
-import logging
 # modules
 from src.db import Db
 from src.scrape import Scrape
@@ -13,7 +12,6 @@ app = Flask(__name__)
 
 Scrape().scrape()
 
-# logging.basicConfig(filename='record.log', level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
  
 @app.route('/blogs')
 def blog():
@@ -93,7 +91,7 @@ def renderDailyReport():
     return send_file('./daily_reports/daily_report_'+str(today)+'.png', mimetype='image/gif')
 
 
-app.run(host="0.0.0.0", port="8080")
+app.run(host="0.0.0.0", port="8000")
 schedule.every().day.at('07:00').do(Scrape().scrape)
 
 while 1:
