@@ -6,7 +6,6 @@ import os
 from src.db import Db
 from src.scrape import Scrape
 from src.date import Date
-from src.render_daily_report import Daily_report
 
 app = Flask(__name__)
 
@@ -41,30 +40,9 @@ def getalldata():
     }
     return response
 
-
-@app.route("/renderTotalInfectionChart")
-def TotalInfectionChart():
-    return send_file('./static/TotalInfectionChart.png', mimetype='image/gif')
-
-
-@app.route("/renderTotalDeathChart")
+@app.route("/renderCoronaGerman")
 def TotalDeathChart():
-    return send_file('./static/TotalDeathChart.png', mimetype='image/gif')
-
-
-@app.route("/renderDeathPerDayChart")
-def DeathPerDayChart():
-    return send_file('./static/DeathPerDayChart.png', mimetype='image/gif')
-
-
-@app.route("/renderInfectionPerDayChart")
-def InfectionPerDayChart():
-    return send_file('./static/InfectionPerDayChart.png', mimetype='image/gif')
-
-
-@app.route("/renderIncidence")
-def Incidence():
-    return send_file('./static/incidence.png', mimetype='image/gif')
+    return send_file('./static/corona-german.png', mimetype='image/gif')
 
 
 @app.route("/renderAverage")
@@ -82,7 +60,8 @@ def renderDailyReport():
     return send_file('./daily_reports/daily_report_'+str(today)+'.png', mimetype='image/gif')
 
 
-app.run(host="0.0.0.0", port="80")
+# app.run(host="0.0.0.0",port="8000",ssl_context=('./keys/cert.pem', './keys/key.pem'))
+app.run(host="0.0.0.0",port="8000")
 schedule.every().day.at('07:00').do(Scrape().scrape)
 
 while 1:

@@ -14,6 +14,7 @@ from .render_daily_report import Daily_report
 from .evaluation import Evaluation
 from .db import Db
 from .date import Date
+from .render_plots import RenderPlot
 
 
 class Scrape:
@@ -59,12 +60,9 @@ class Scrape:
         evaluation.save_average_as_plot("./static/average.png")
 
         self.render_chart(all_data_in_db, 1, './static/InfectionPerDayChart', 'Infektionen Pro Tag')
-        self.render_chart(all_data_in_db, 2, './static/TotalInfectionChart', 'Corona Infektionen in Millionen')
-        self.render_chart(all_data_in_db, 3, './static/procent', 'Corona Infektionen in Millionen')
         self.render_chart(all_data_in_db, 4, './static/incidence', 'incidence')
-        self.render_chart(all_data_in_db, 5, './static/TotalDeathChart', 'Tode durch das Corona Virus')
-        self.render_chart(all_data_in_db, 6, './static/DeathPerDayChart', 'Tode durch das Corona Virus Pro Tag')
-        self.render_chart(all_data_in_db, 8, './static/recoveries', 'recoveries')
+
+        RenderPlot().render_and_save_main_plot()
 
         new_infection_of_yesterday =  int(db_data_of_yesterday[0][0])
 

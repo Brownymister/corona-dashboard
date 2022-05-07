@@ -127,47 +127,15 @@
             <div class="card" style="width: 40rem;margin:1%;">
                 <div class="card-body">
                     <h1 class="card-title" id="total_deaths"></h1>
-                    <img id="renderChart" src="/renderTotalInfectionChart" onclick="window.location='/renderTotalInfectionChart'" alt="renderTotalInfectionChart" style="margin:1%; " width="600 " height="300 ">
+                    <img id="renderChart" src="/renderCoronaGerman" onclick="window.location='/renderCoronaGerman'" alt="renderCoronaGerman" style="margin:1%; " width="600 " height="300 ">
                     <h6><em>Corona Infektionen seit Beginn</em></h6>
                 </div>
             </div>
             <div class="card " style="width: 40rem; margin:1%">
                 <div class="card-body ">
                     <h1 class="card-title " id="total_deaths"></h1>
-                    <img id="renderChart " src="/renderTotalDeathChart" onclick="window.location='/renderTotalDeathChart'" alt="renderTotalDeathChart" style="margin:1%; " width="600 " height="300 ">
-                    <h6><em>Corona Tode seit Beginn</em></h6>
-                </div>
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="card " style="width: 40rem;margin:1%;">
-                <div class="card-body ">
-                    <h1 class="card-title " id="total_deaths"></h1>
-                    <img id="renderChart " src="/renderInfectionPerDayChart" onclick="window.location='/renderInfectionPerDayChart'" alt="renderInfectionPerDayChart" style="margin:1%; " width="600 " height="300 ">
-                    <h6><em>Corona Infektionen pro Tag</em></h6>
-                </div>
-            </div>
-            <div class="card " style="width: 40rem;margin:1%;">
-                <div class="card-body ">
-                    <h1 class="card-title " id="total_deaths"></h1>
-                    <img id="renderChart " src="/renderDeathPerDayChart" onclick="window.location='/renderDeathPerDayChart'" alt="renderDeathPerDayChart" style="margin:1%; " width="600 " height="300 ">
-                    <h6><em>Corona Tode pro Tag</em></h6>
-                </div>
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="card " style="width: 40rem;margin:1%;">
-                <div class="card-body ">
-                    <h1 class="card-title " id="incidence"></h1>
-                    <img id="renderChart " src="/renderIncidence" onclick="window.location='/renderIncidence'" alt="renderIncidence" style="margin:1%; " width="600 " height="300 ">
-                    <h6><em>Corona Inzidenz pro Tag</em></h6>
-                </div>
-            </div>
-            <div class="card " style="width: 40rem;margin:1%;">
-                <div class="card-body ">
-                    <h1 class="card-title " id="total_deaths"></h1>
                     <img id="renderChart " src="/renderAverage" onclick="window.location='/renderAverage'" alt="renderAverage" style="margin:1%; " width="600 " height="300 ">
-                    <h6><em>Corona Infektionen pro Wochentag im Durchschnitt</em></h6>
+                    <h6><em>Corona Tode seit Beginn</em></h6>
                 </div>
             </div>
         </div>
@@ -188,7 +156,7 @@
             var date = document.getElementById("date").value;
             if (date != "") {
                 var alldata = await axios.get('/getalldata?date=' + date);
-                if (alldata.stus == 200) {
+                if (alldata.status == 200) {
                     updateUI(alldata.data);
                 }
             }

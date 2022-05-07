@@ -5,7 +5,7 @@
 
 """
 
-import plotly.graph_objs as go
+import matplotlib.pyplot as plt
 
 class Evaluation:
 
@@ -77,14 +77,10 @@ class Evaluation:
         If not specified, the file name is "./staic/average.png".
         """
         if self.averages != []:
-            fig = go.Figure(data=go.Bar(y=self.averages,
-                                        x=self.classes,
-                                        marker_color='indianred', text=self.averages))
-            fig.update_layout({"title": "durchschnittliche infektionen",
-                            "xaxis": {"title": "Tage"},
-                            "yaxis": {"title": "Infektionen"},
-                            "showlegend": False})
-            fig.write_image(filename, format="png",
-                            width=1000, height=600, scale=3)
+            fig = plt.figure()
+            ax = fig.add_axes([0,0,1,1])
+            ax.bar(self.classes,self.averages)
+            # plt.grid(True)
+            fig.savefig("./static/average")
         else:
             print("ERROR: average not calculated; To save, the function evaluation.evaluate_average_per_day() must be executed")
