@@ -65,6 +65,10 @@ class Db:
             today = Date().get_formatted_date()
             select_data_by_date = "SELECT * FROM corona WHERE date = '"+today+"';"
         else:
+            date = date.replace(";","")
+            date = date.replace("'","")
+            date = date.replace("delete","")
+            date = date.replace("drop","")
             select_data_by_date = "SELECT * FROM corona WHERE date = '"+date+"';"
         data_by_date = self.execute_sql(select_data_by_date)
         

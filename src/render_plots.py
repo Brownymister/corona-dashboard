@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+plt.switch_backend('Agg')
 import numpy as np
 # modules
 from src.db import Db
@@ -64,7 +65,7 @@ class RenderPlot:
 
         ax1 = middle_ax.twinx()
         ax1.set_ylabel('total deaths', color='#df5729')
-        ax1.plot(self.dates, self.total_deaths,color="#006798",label="total deaths")
+        ax1.plot(self.dates, self.total_deaths,color='tab:blue',label="total deaths")
         ax1.legend(loc="upper center")
 
         bottom_ax.plot(self.dates, self.incidence ,label="incendence")

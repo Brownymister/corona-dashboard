@@ -137,3 +137,6 @@ daily_reports
 docs
 
 keys
+
+/client/*
+!/client/index.html
