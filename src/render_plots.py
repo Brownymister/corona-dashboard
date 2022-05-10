@@ -9,16 +9,14 @@ from src.date import Date
 class RenderPlot:
     """class to render plot
     """
-
-    dates = []
-    all_new_infections = []
-    smothed_new_infections = []
-    all_new_deaths = []
-    total_infections = []
-    total_deaths = []
-    incidence = []
-
     def __init__(self) -> None:
+        self.dates = []
+        self.all_new_infections = []
+        self.smothed_new_infections = []
+        self.all_new_deaths = []
+        self.total_infections = []
+        self.total_deaths = []
+        self.incidence = []
 
         self.sort_data()
 
