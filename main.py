@@ -45,6 +45,10 @@ def TotalDeathChart():
     return send_file('./static/corona-german.png', mimetype='image/gif')
 
 
+@app.route("/favicon.ico")
+def favicon():
+    return send_file('./static/favicon.ico', mimetype='image/gif')
+
 @app.route("/renderAverage")
 def renderAverage():
     return send_file('./static/average.png', mimetype='image/gif')
