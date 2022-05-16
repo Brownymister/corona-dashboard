@@ -59,14 +59,12 @@ class Scrape:
         evaluation.evaluate_average_per_day(mydb.get_all_new_infections_from_db())
         evaluation.save_average_as_plot("./static/average.png")
 
-        self.render_chart(all_data_in_db, 1, './static/InfectionPerDayChart', 'Infektionen Pro Tag')
-        self.render_chart(all_data_in_db, 4, './static/incidence', 'incidence')
-
+        RenderPlot().render_plot_daily_report()
         RenderPlot().render_and_save_main_plot()
 
         new_infection_of_yesterday =  int(db_data_of_yesterday[0][0])
 
-        Daily_report(1200,1000).render_daily_report_image(
+        Daily_report(1200,1050).render_daily_report_image(
             self.corona_numbers["new_infection"], self.corona_numbers["new_death"],
             self.corona_numbers["total_infection"], self.corona_numbers["total_death"],
              self.corona_numbers["incidenze"], new_infection_of_yesterday,'/daily_reports')

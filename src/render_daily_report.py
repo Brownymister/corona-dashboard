@@ -31,30 +31,24 @@ class Daily_report:
         self.font_smal = ImageFont.truetype(
             "./font/Prompt-LightItalic.ttf", 20)
 
-        self.infection_per_day_chart = Image.open('./static/InfectionPerDayChart.png')
-        self.incidence_chart = Image.open('./static/incidence.png')
+        self.daily_report_plot = Image.open('./static/daily_report_plot.png')
 
     def render_daily_report_image(self, new_infektion, new_death, total_infektion, total_death, inzidence, new_infection_of_yesterday,save_folder) -> None:
-        new_size = 0.2
-        self.resize_size_of_charts(new_size)
+        self.resize_size_of_chart(new_size=0.55)
 
         today = Date().get_formatted_date()
         self.draw_corona_infos_to_image(
             new_infektion, new_death, total_infektion, total_death, inzidence, today)
 
         self.add_arrow_to_image(new_infektion, new_infection_of_yesterday)
-        self.add_charts_to_image()
+        self.add_chart_to_image()
 
         self.image.save(str(pathlib.Path("render_daily_report.py").parent.resolve())+save_folder+'/daily_report_'+str(today)+'.png')
 
-    def resize_size_of_charts(self, new_size):
-        self.infection_per_day_chart = self.infection_per_day_chart.resize(
-            (round(self.infection_per_day_chart.size[0]*new_size),
-             round(self.infection_per_day_chart.size[1]*new_size))
-        )
-        self.incidence_chart = self.incidence_chart.resize(
-            (round(self.incidence_chart.size[0]*new_size),
-             round(self.incidence_chart.size[1]*new_size))
+    def resize_size_of_chart(self, new_size):
+        self.daily_report_plot = self.daily_report_plot.resize(
+            (round(self.daily_report_plot.size[0]*new_size),
+             round(self.daily_report_plot.size[1]*new_size))
         )
 
     def draw_corona_infos_to_image(self, new_infektion, new_death, total_infektion, total_death, inzidence, today):
@@ -93,6 +87,5 @@ class Daily_report:
         else:
             self.image.paste(self.arrow_up_image, (self.width - 380, 100))
 
-    def add_charts_to_image(self):
-        self.image.paste(self.incidence_chart, (600, 500))
-        self.image.paste(self.infection_per_day_chart, (10, 500))
+    def add_chart_to_image(self):
+        self.image.paste(self.daily_report_plot, (50, 450))

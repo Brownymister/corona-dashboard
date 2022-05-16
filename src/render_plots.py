@@ -81,3 +81,37 @@ class RenderPlot:
         fig.subplots_adjust(top=0.9)
 
         plt.savefig("./static/corona-german.png")
+
+    def render_plot_daily_report(self):
+
+        all_data_in_db = Db().get_all_data_from_db()
+
+        dates = []
+        new_infections = []
+        smothed_new_infections = []
+        incidence = []
+
+        for day in all_data_in_db:
+            dates.append(day[0])
+            new_infections.append(int(day[1]))
+            incidence.append(float(day[4]))
+            smothed_new_infections.append(round(int(day[7])/7))
+
+        fig, ax = plt.subplots(1, 2,figsize=(20, 10))
+
+        ax[0].set_yticks(np.arange(0, int(max(new_infections)), 100000)) 
+        ax[0].plot(dates, new_infections,color="#df5729",linewidth=1.0,label="Neue Infektionen pro Tag")
+        ax[0].plot(dates ,smothed_new_infections,color="#df5729",linewidth=3.0,label='Durchschnitt der letzten 7 Tage an neuen Infektionen')
+        ax[0].grid(True)
+        ax[0].legend()
+
+        ax[1].set_yticks(np.arange(0, int(max(incidence)), 100)) 
+        ax[1].plot(dates ,incidence,color="tab:blue",linewidth=1.0,label='Durchschnitt der neuen Infektionen')
+        ax[1].grid(True)
+        ax[1].legend()
+
+        ax[0].set_title("Neue Infektionen pro Tag")
+        ax[1].set_title("Inzidenz pro Tag")
+
+        fig.tight_layout()
+        plt.savefig("./static/daily_report_plot.png")
