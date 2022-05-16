@@ -73,40 +73,6 @@ class TestScrape(unittest.TestCase):
         basic_value = 50
         difference = new_value * 100 / basic_value
         self.assertEqual(difference, Scrape().calculate_difference(new_value, basic_value))
-
-    def test_render_chart(self):
-        path = "./__tests__/render_chart_test/"
-        expectedOutput = ["InfectionPerDayChart.png", "TotalInfectionChart.png",
-                          "procent.png", "incidence.png", "TotalDeathChart.png", "DeathPerDayChart.png", "recoveries.png"]
-        setup = Scrape_setup()
-        setup.setup_render_chart(path)
-        scrape = Scrape()
-
-        scrape.render_chart(setup.all_data_in_db_dummy, 1, path + 'InfectionPerDayChart', 'Infektionen Pro Tag')
-        scrape.render_chart(setup.all_data_in_db_dummy, 2, path + 'TotalInfectionChart', 'Corona Infektionen in Millionen')
-        scrape.render_chart(setup.all_data_in_db_dummy, 3, path + 'procent', 'Corona Infektionen in Millionen')
-        scrape.render_chart(setup.all_data_in_db_dummy, 4, path + 'incidence', 'incidence')
-        scrape.render_chart(setup.all_data_in_db_dummy, 5, path + 'TotalDeathChart', 'Tode durch das Corona Virus')
-        scrape.render_chart(setup.all_data_in_db_dummy, 6, path + 'DeathPerDayChart', 'Tode durch das Corona Virus Pro Tag')
-        scrape.render_chart(setup.all_data_in_db_dummy, 8, path + 'recoveries', 'recoveries')
-
-        self.assertTrue(set(os.listdir(path)) == set(expectedOutput))
-
-        Scrape_teardown().tear_down_render_chart(path, expectedOutput)
-
-    def test_sort_data_to_x_and_y(self):
-        setup = Scrape_setup()
-
-        for i in range(7):
-            expected_infection_history = [[],[]]
-            for j in range(len(setup.all_data_in_db_dummy)):
-                expected_infection_history[0].append(str(setup.all_data_in_db_dummy[j][0]))
-                expected_infection_history[1].append(float(setup.all_data_in_db_dummy[j][i+1]))
-            expected_date = Date().get_date_in_10_days()
-            expectedOutput = [expected_infection_history,expected_date]
-            total_infection_history, Previous_Date= Scrape().sort_data_to_x_and_y(setup.all_data_in_db_dummy,i+1)
-            Output = [total_infection_history, Previous_Date]
-            self.assertEqual(Output,expectedOutput)
-
+        
 if __name__ == '__main__':
     unittest.main()
