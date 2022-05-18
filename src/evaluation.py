@@ -15,6 +15,7 @@ class Evaluation:
                    "Thursdays", "Fridays", "Saturdays", "Sundays"]
 
     def evaluate_average_per_day(self, infections:list):
+        self.averages = []
         """calculates the average of new infections per day
 
         Args:
@@ -89,5 +90,6 @@ class Evaluation:
             plt.title('Average of infections peer weekday')
 
             plt.savefig(filename)    
+            self.averages = []
         else:
             print("ERROR: average not calculated; To save, the function evaluation.evaluate_average_per_day() must be executed")
