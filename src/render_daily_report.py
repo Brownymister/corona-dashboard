@@ -7,6 +7,8 @@
 
 from PIL import Image, ImageDraw, ImageFont
 import pathlib
+
+from numpy import average
 # module
 from .date import Date
 
@@ -33,14 +35,14 @@ class Daily_report:
 
         self.daily_report_plot = Image.open('./static/daily_report_plot.png')
 
-    def render_daily_report_image(self, new_infektion, new_death, total_infektion, total_death, inzidence, new_infection_of_yesterday,save_folder) -> None:
+    def render_daily_report_image(self, new_infektion, new_death, total_infektion, total_death, inzidence, sum_last_7D,save_folder) -> None:
         self.resize_size_of_chart(new_size=0.55)
 
         today = Date().get_formatted_date()
         self.draw_corona_infos_to_image(
             new_infektion, new_death, total_infektion, total_death, inzidence, today)
 
-        self.add_arrow_to_image(new_infektion, new_infection_of_yesterday)
+        self.add_arrow_to_image(new_infektion, (sum_last_7D/7))
         self.add_chart_to_image()
 
         self.image.save(str(pathlib.Path("render_daily_report.py").parent.resolve())+save_folder+'/daily_report_'+str(today)+'.png')
@@ -80,9 +82,9 @@ class Daily_report:
         self.drawn_image.text((self.width/2, 430), "7-Tage-Inzi­denz",
                               font=self.font_smal, fill="#000", anchor="ms")
 
-    def add_arrow_to_image(self, new_infektion, new_infection_of_yesterday):
-        new_infection_of_yesterday_is_greater_than_todays_new_infection = new_infection_of_yesterday >= new_infektion
-        if new_infection_of_yesterday_is_greater_than_todays_new_infection:
+    def add_arrow_to_image(self, new_infektion, average_infection_of_week):
+        average_of_week_is_greater_than_todays_new_infection = average_infection_of_week >= new_infektion
+        if average_of_week_is_greater_than_todays_new_infection:
             self.image.paste(self.arrow_down_image, (self.width - 380, 100))
         else:
             self.image.paste(self.arrow_up_image, (self.width - 380, 100))

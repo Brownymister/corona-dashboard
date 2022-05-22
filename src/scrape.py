@@ -62,12 +62,10 @@ class Scrape:
         RenderPlot().render_plot_daily_report()
         RenderPlot().render_and_save_main_plot()
 
-        new_infection_of_yesterday =  int(db_data_of_yesterday[0][0])
-
         Daily_report(1200,1050).render_daily_report_image(
             self.corona_numbers["new_infection"], self.corona_numbers["new_death"],
             self.corona_numbers["total_infection"], self.corona_numbers["total_death"],
-             self.corona_numbers["incidenze"], new_infection_of_yesterday,'/daily_reports')
+            self.corona_numbers["incidenze"], self.corona_numbers["SumLast7D"],'/daily_reports')
 
     def create_table_if_not_excist(self, mycursor):
         mycursor.execute("CREATE TABLE IF NOT EXISTS corona (date DATE PRIMARY KEY, new_infection longtext,total_infection_de longtext,t_difference_in_pro float, incedence longtext, death longtext,new_death longtext, SumLast7D varchar(200),recoveries varchar(200));")

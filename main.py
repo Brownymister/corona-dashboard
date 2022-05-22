@@ -2,12 +2,15 @@ from flask import Flask, request, send_file
 import schedule
 import time
 import os
+import logging
 # modules
 from src.db import Db
 from src.scrape import Scrape
 from src.date import Date
 
 app = Flask(__name__)
+
+logging.basicConfig(filename='log.log',level=logging.DEBUG)
 
 Scrape().scrape()
 
