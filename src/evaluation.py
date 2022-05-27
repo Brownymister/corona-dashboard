@@ -90,7 +90,8 @@ class Evaluation:
             plt.ylabel('Infection')
             plt.title('Average of infections peer weekday')
 
-            plt.savefig(filename)    
+            plt.savefig(filename)
+            plt.close()    
             self.averages = []
         else:
             print("ERROR: average not calculated; To save, the function evaluation.evaluate_average_per_day() must be executed")

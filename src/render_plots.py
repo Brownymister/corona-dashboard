@@ -81,6 +81,7 @@ class RenderPlot:
         fig.subplots_adjust(top=0.9)
 
         plt.savefig("./static/corona-german.png")
+        plt.close()
 
     def render_plot_daily_report(self):
 
@@ -115,3 +116,4 @@ class RenderPlot:
 
         fig.tight_layout()
         plt.savefig("./static/daily_report_plot.png")
+        plt.close()
