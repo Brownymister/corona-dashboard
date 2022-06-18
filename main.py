@@ -3,7 +3,6 @@ import schedule
 import time
 import os
 import logging
-# modules
 from src.db import Db
 from src.scrape import Scrape
 from src.date import Date

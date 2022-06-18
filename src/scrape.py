@@ -40,7 +40,7 @@ class Scrape:
 
         self.set_corona_numbers(resultjson_de)
 
-        deference_in_pro, db_data_of_yesterday = self.get_diference_of_today_and_yesterday(self.corona_numbers["new_infection"], mydb)
+        deference_in_pro = self.get_diference_of_today_and_yesterday(self.corona_numbers["new_infection"], mydb)
 
         today = Date().get_todays_date()
         select_data_of_today = "SELECT * FROM corona WHERE date = '"+str(today)+"';"
@@ -98,8 +98,10 @@ class Scrape:
         db_data_of_yesterday = mydb.execute_sql(get_new_infection_of_yesterday)
         deference_in_pro = self.calculate_difference(
             int(new_infection), int(db_data_of_yesterday[0][0]))
-        return deference_in_pro, db_data_of_yesterday
+        return deference_in_pro
 
     def calculate_difference(self, new_value, basic_value):
+        if new_value == basic_value:
+            return 0
         new_value = new_value * 100
         return new_value/basic_value

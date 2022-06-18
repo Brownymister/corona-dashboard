@@ -1,10 +1,11 @@
 import matplotlib.pyplot as plt
 plt.switch_backend('Agg')
 import numpy as np
-# modules
+import seaborn as sns
 from src.db import Db
 from src.date import Date
 
+sns.set_theme()
 
 class RenderPlot:
     """class to render plot
@@ -52,6 +53,7 @@ class RenderPlot:
         ax0 = top_ax.twinx()
         ax0.set_ylabel('Daily new deaths', color='tab:blue',)
         ax0.plot(self.dates, self.all_new_deaths,label="Daily new deaths")
+        ax0.grid(False)
         ax0.legend(loc="upper center")
 
         middle_ax.plot(self.dates, self.total_infections,color='#df5729',label='total infections')
@@ -64,6 +66,7 @@ class RenderPlot:
         ax1 = middle_ax.twinx()
         ax1.set_ylabel('total deaths', color='#df5729')
         ax1.plot(self.dates, self.total_deaths,color='tab:blue',label="total deaths")
+        ax1.grid(False)
         ax1.legend(loc="upper center")
 
         bottom_ax.plot(self.dates, self.incidence ,label="incendence")
